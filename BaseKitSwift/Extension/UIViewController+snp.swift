@@ -87,8 +87,13 @@ public var DismissExistAlertController = true
 
 public extension UIViewController {
 
-    func bk_presentAlertController(title: String?, message: String?, preferredStyle: UIAlertController.Style,
-                                   actions: [UIAlertAction]) -> Void {
+    func bk_presentAlertController(
+        title: String?,
+        message: String?,
+        preferredStyle: UIAlertController.Style,
+        actions: [UIAlertAction])
+        -> Void
+    {
 
         let closure = { () in
             let temp = UIAlertController.init(title: title, message: message, preferredStyle: preferredStyle)
@@ -107,17 +112,25 @@ public extension UIViewController {
         }
     }
     
-    func bk_presentWarningAlertController(title: String, message: String,
-                                          closure: ((UIAlertAction) -> Void)? = nil) -> Void {
+    func bk_presentWarningAlertController(
+        title: String,
+        message: String,
+        closure: ((UIAlertAction) -> Void)? = nil)
+        -> Void
+    {
         
         let action = UIAlertAction.init(title: "确定".localized, style: .destructive, handler: closure)
         bk_presentAlertController(title: title, message: message, preferredStyle: .alert, actions: [action])
     }
     
-    func bk_presentDecisionAlertController(title: String?, message: String?,
-                                           decisionTitle: String?,
-                                           decisionClosure: @escaping (UIAlertAction) -> Void,
-                                           cancelClosure: ((UIAlertAction) -> Void)? = nil) -> Void {
+    func bk_presentDecisionAlertController(
+        title: String?,
+        message: String?,
+        decisionTitle: String?,
+        decisionClosure: @escaping (UIAlertAction) -> Void,
+        cancelClosure: ((UIAlertAction) -> Void)? = nil)
+        -> Void
+    {
         
         let action1 = UIAlertAction.init(title: decisionTitle ?? "确定".localized, style: .default, handler: decisionClosure)
         let action2 = UIAlertAction.init(title: "取消".localized, style: .cancel, handler: cancelClosure)

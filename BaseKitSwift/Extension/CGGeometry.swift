@@ -28,23 +28,43 @@ public extension CGRect {
     
     func insetBy(edgeInset: UIEdgeInsets) -> CGRect {
         
-        return CGRect.init(x: self.origin.x + edgeInset.left, y: self.origin.y + edgeInset.top, width: self.size.width - edgeInset.left - edgeInset.right, height: self.size.height - edgeInset.top - edgeInset.bottom)
+        return CGRect.init(
+            x: self.origin.x + edgeInset.left,
+            y: self.origin.y + edgeInset.top,
+            width: self.size.width - edgeInset.left - edgeInset.right,
+            height: self.size.height - edgeInset.top - edgeInset.bottom
+        )
     }
 }
 
 public func + (lhs: CGRect, rhs: CGRect) -> CGRect {
     
-    return CGRect.init(x: lhs.origin.x + rhs.origin.x, y: lhs.origin.y + rhs.origin.y, width: lhs.size.width + rhs.size.width, height: lhs.size.height + rhs.size.height)
+    return CGRect.init(
+        x: lhs.origin.x + rhs.origin.x,
+        y: lhs.origin.y + rhs.origin.y,
+        width: lhs.size.width + rhs.size.width,
+        height: lhs.size.height + rhs.size.height
+    )
 }
 
 public func * (rect: CGRect, scale: CGFloat) -> CGRect {
     
-    return CGRect.init(x: rect.origin.x*scale, y: rect.origin.y*scale, width: rect.width*scale, height: rect.height*scale)
+    return CGRect.init(
+        x: rect.origin.x*scale,
+        y: rect.origin.y*scale,
+        width: rect.width*scale,
+        height: rect.height*scale
+    )
 }
 
 public func / (rect: CGRect, divided: CGFloat) -> CGRect {
     
-    return CGRect.init(x: rect.origin.x/divided, y: rect.origin.y/divided, width: rect.width/divided, height: rect.height/divided)
+    return CGRect.init(
+        x: rect.origin.x/divided,
+        y: rect.origin.y/divided,
+        width: rect.width/divided,
+        height: rect.height/divided
+    )
 }
 
 public func * (size: CGSize, scale: CGFloat) -> CGSize {
@@ -59,12 +79,22 @@ public func / (size: CGSize, divided: CGFloat) -> CGSize {
 
 public func * (inset: UIEdgeInsets, scale: CGFloat) -> UIEdgeInsets {
     
-    return UIEdgeInsets.init(top: inset.top*scale, left: inset.left*scale, bottom: inset.bottom*scale, right: inset.right*scale)
+    return UIEdgeInsets.init(
+        top: inset.top*scale,
+        left: inset.left*scale,
+        bottom: inset.bottom*scale,
+        right: inset.right*scale
+    )
 }
 
 public func / (inset: UIEdgeInsets, divided: CGFloat) -> UIEdgeInsets {
     
-    return UIEdgeInsets.init(top: inset.top/divided, left: inset.left/divided, bottom: inset.bottom/divided, right: inset.right/divided)
+    return UIEdgeInsets.init(
+        top: inset.top/divided,
+        left: inset.left/divided,
+        bottom: inset.bottom/divided,
+        right: inset.right/divided
+    )
 }
 
 public func / (point: CGPoint, divided: CGFloat) -> CGPoint {
@@ -91,9 +121,9 @@ public extension CGAffineTransform {
     var rotate: CGFloat { return atan2(b, a) }
     
     /// 要求变换矩阵不包含旋转分量
-    var scaleX: CGFloat { return sqrt(a*a+c*c)}
+    var scaleX: CGFloat { return sqrt(a*a+c*c) }
     
-    var scaleY: CGFloat { return sqrt(b*b+d*d)}
+    var scaleY: CGFloat { return sqrt(b*b+d*d) }
     
     var translateX: CGFloat { return tx }
     

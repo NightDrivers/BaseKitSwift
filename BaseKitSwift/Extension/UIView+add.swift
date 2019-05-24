@@ -35,6 +35,8 @@ public extension UIView {
 
 public extension UIView {
     
+    private static var swizzled = false
+    
     private struct Key {
         static var TouchEdgeInsetKey = 0
     }
@@ -51,6 +53,8 @@ public extension UIView {
     }
     
     static func swizzlePointInsideMethod() {
+        
+        if swizzled { return }
         
         if let origin = class_getInstanceMethod(self, #selector(point(inside:with:))),
             let new = class_getInstanceMethod(self, #selector(bk_point(inside:with:))) {

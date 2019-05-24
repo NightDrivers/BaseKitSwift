@@ -3,14 +3,12 @@
 
 target 'BaseKitSwift' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  pod 'SnapKit', '~> 4.2.0'
   use_frameworks!
-
+  pod 'SnapKit', '~> 4.2.0'
   # Pods for BaseKitSwift
+end
 
-  target 'BaseKitSwiftTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+target 'BaseKitSwiftExample' do
+  use_frameworks!
+  pod 'SnapKit', '~> 4.2.0'
 end

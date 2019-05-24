@@ -20,9 +20,14 @@ public class BKKeyboardAutoAdjust: NSObject {
     
     public func beginMonitoredEditing(){
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notify:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.textFieldDidBeginEditing(notify:)), name: UITextField.textDidBeginEditingNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notify:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let items: [(Selector, Notification.Name)] = [
+            (#selector(self.keyboardWillShow(notify:)), UIResponder.keyboardWillShowNotification),
+            (#selector(self.textFieldDidBeginEditing(notify:)), UITextField.textDidBeginEditingNotification),
+            (#selector(self.keyboardWillHide(notify:)), UIResponder.keyboardWillHideNotification),
+        ]
+        for item in items {
+            NotificationCenter.default.addObserver(self, selector: item.0, name: item.1, object: nil)
+        }
     }
     
     public func stopMonitoredEditing() -> Void {

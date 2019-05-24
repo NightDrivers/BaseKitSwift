@@ -10,7 +10,11 @@ import Foundation
 
 public extension UITextField {
     
-    static func swizzle() {
+    private static var swizzled = false
+    
+    static func bk_swizzle() {
+        
+        if swizzled { return }
         
         let originSelectors = [
             #selector(self.leftViewRect(forBounds:)),
@@ -18,9 +22,9 @@ public extension UITextField {
             #selector(self.editingRect(forBounds:))
         ]
         let newSelectors = [
-            #selector(self.ap_leftViewRect(forBounds:)),
-            #selector(self.ap_textRect(forBounds:)),
-            #selector(self.ap_editingRect(forBounds:))
+            #selector(self.bk_leftViewRect(forBounds:)),
+            #selector(self.bk_textRect(forBounds:)),
+            #selector(self.bk_editingRect(forBounds:))
         ]
         
         for i in 0..<originSelectors.count {
@@ -59,38 +63,38 @@ public extension UITextField {
         }
     }
     
-    @objc func ap_leftViewRect(forBounds bounds: CGRect) -> CGRect {
+    @objc func bk_leftViewRect(forBounds bounds: CGRect) -> CGRect {
         
         if let leftViewRect = leftViewRect {
             return leftViewRect
         }else {
-            return ap_leftViewRect(forBounds: bounds)
+            return bk_leftViewRect(forBounds: bounds)
         }
     }
     
-    @objc func ap_textRect(forBounds bounds: CGRect) -> CGRect {
+    @objc func bk_textRect(forBounds bounds: CGRect) -> CGRect {
         
         if let leftTextMargin = leftTextMargin {
             
-            var rect = ap_textRect(forBounds: bounds)
+            var rect = bk_textRect(forBounds: bounds)
             rect.origin.x += leftTextMargin
             rect.size.width -= leftTextMargin
             return rect
         }else {
-            return ap_textRect(forBounds: bounds)
+            return bk_textRect(forBounds: bounds)
         }
     }
     
-    @objc func ap_editingRect(forBounds bounds: CGRect) -> CGRect {
+    @objc func bk_editingRect(forBounds bounds: CGRect) -> CGRect {
         
         if let leftTextMargin = leftTextMargin {
             
-            var rect = ap_editingRect(forBounds: bounds)
+            var rect = bk_editingRect(forBounds: bounds)
             rect.origin.x += leftTextMargin
             rect.size.width -= leftTextMargin
             return rect
         }else {
-            return ap_editingRect(forBounds: bounds)
+            return bk_editingRect(forBounds: bounds)
         }
     }
 }

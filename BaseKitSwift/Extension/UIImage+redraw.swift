@@ -116,7 +116,7 @@ public extension UIImage {
     ///   - aspectRatio: 结果图片宽高比
     ///   - color: 背景颜色，默认白色
     /// - Returns: 填充后的图片
-    func fillIn(aspectRatio: CGFloat,background color: UIColor = UIColor.white) -> UIImage {
+    func fillIn(aspectRatio: CGFloat, background color: UIColor = UIColor.white) -> UIImage {
         
         if pixelWidth/pixelHeight == aspectRatio {
             return self
@@ -148,23 +148,15 @@ public extension UIImage {
     ///   - size: 结果图片大小
     ///   - rects: 绘制区域数组
     ///   - color: 背景色
+    ///   - extraDrawClosure: 额外的绘制closure
     /// - Returns: 绘制结果
-//    func drawIn(destination size: CGSize, rects:[CGRect], background color: UIColor = UIColor.white) -> UIImage {
-//
-//        UIGraphicsBeginImageContextWithOptions(size, true, 1)
-//        color.setFill()
-//        UIRectFill(CGRect.init(origin: CGPoint.zero, size: size))
-//        for rect in rects {
-//            draw(in: rect)
-//        }
-//        let result = UIGraphicsGetImageFromCurrentImageContext()!
-//        UIGraphicsEndImageContext()
-//        return result
-//    }
-    
-    func drawIn(destination size: CGSize, rects:[CGRect],
-                background color: UIColor = UIColor.white, extraDrawClosure: ((_: CGContext) -> Void)? = nil) -> UIImage {
-        
+    func drawIn(
+        destination size: CGSize,
+        rects:[CGRect],
+        background color: UIColor = UIColor.white,
+        extraDrawClosure: ((_: CGContext) -> Void)? = nil)
+        -> UIImage
+    {
         UIGraphicsBeginImageContextWithOptions(size, false, 1)
         color.setFill()
         UIRectFill(CGRect.init(origin: CGPoint.zero, size: size))
