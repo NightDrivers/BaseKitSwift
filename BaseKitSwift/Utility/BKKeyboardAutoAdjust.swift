@@ -10,7 +10,7 @@ import UIKit
 
 public class BKKeyboardAutoAdjust: NSObject {
 
-    var editingViewFrame = CGRect.zero
+    private var editingViewFrame = CGRect.zero
     
     public static let share = BKKeyboardAutoAdjust()
     

@@ -21,7 +21,11 @@ public extension AVCaptureDevice {
         case .denied,.restricted:
             KeyWindow?.rootViewController?.bk_presentDecisionAlertController(title: "提示".localized, message: "请您设置允许该应用访问您的相机\n设置>隐私>相机".localized, decisionTitle: "去设置".localized, decisionClosure: { (_) in
                 guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
-                UIApplication.shared.openURL(url)
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }else {
+                    UIApplication.shared.openURL(url)
+                }
             })
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video, completionHandler: { (authored) in
@@ -31,6 +35,8 @@ public extension AVCaptureDevice {
                     }
                 }
             })
+        @unknown default:
+            fatalError("never execute")
         }
     }
 }
@@ -46,7 +52,11 @@ public extension PHPhotoLibrary {
         case .denied,.restricted:
             KeyWindow?.rootViewController?.bk_presentDecisionAlertController(title: "提示".localized, message: "请您设置允许该应用访问您的照片\n设置>隐私>照片".localized, decisionTitle: "去设置".localized, decisionClosure: { (_) in
                 guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
-                UIApplication.shared.openURL(url)
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }else {
+                    UIApplication.shared.openURL(url)
+                }
             })
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization({ (status) in
@@ -56,6 +66,8 @@ public extension PHPhotoLibrary {
                     }
                 }
             })
+        @unknown default:
+            fatalError("never execute")
         }
     }
 }

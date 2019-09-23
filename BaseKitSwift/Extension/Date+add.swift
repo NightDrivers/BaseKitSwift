@@ -71,10 +71,10 @@ public extension Date {
         return Calendar.current.component(.second, from: self)
     }
     
-    func dateString(dateFormat: String) -> String {
+    func formatString(_ format: String) -> String {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
+        dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
 }

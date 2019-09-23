@@ -45,13 +45,13 @@ public class LayoutConstraint : NSLayoutConstraint {
 
 internal func ==(lhs: LayoutConstraint, rhs: LayoutConstraint) -> Bool {
     guard lhs.firstItem === rhs.firstItem &&
-          lhs.secondItem === rhs.secondItem &&
-          lhs.firstAttribute == rhs.firstAttribute &&
-          lhs.secondAttribute == rhs.secondAttribute &&
-          lhs.relation == rhs.relation &&
-          lhs.priority == rhs.priority &&
-          lhs.multiplier == rhs.multiplier else {
-        return false
+        lhs.secondItem === rhs.secondItem &&
+        lhs.firstAttribute == rhs.firstAttribute &&
+        lhs.secondAttribute == rhs.secondAttribute &&
+        lhs.relation == rhs.relation &&
+        lhs.priority == rhs.priority &&
+        lhs.multiplier == rhs.multiplier else {
+            return false
     }
     return true
 }

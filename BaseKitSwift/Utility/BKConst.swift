@@ -22,6 +22,8 @@ public let CachesPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .u
 
 public func BKLog(_ item: Any?, file: String = #file, line: Int = #line) {
     
+    #if DEBUG
     let fileName = (file as NSString).lastPathComponent
     print("\(fileName)-\(line):\n\(item ?? "nil")")
+    #endif
 }

@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name         = "BaseKitSwift"
-  s.version      = "4.2.1"
+  s.version      = "5.0.1"
   s.summary      = "简单的开发库"
-  s.swift_version = "4.2"
+  s.swift_version = "5.0.1"
   s.description  = <<-DESC
   "一个包含常用api的库"
                    DESC

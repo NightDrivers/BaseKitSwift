@@ -41,7 +41,15 @@ public extension UIViewController {
     @available(iOS 9.0, *)
     private var bk_custom_guide: UILayoutGuide {
         
-        get {
+        return getCustomGuide()
+    }
+    
+    @available(iOS 9.0, *)
+    private func getCustomGuide() -> UILayoutGuide {
+        
+        if #available(iOS 11, *) {
+            return view!.safeAreaLayoutGuide
+        }else {
             if let temp = objc_getAssociatedObject(self, &UIViewController.CustomGuideKey) as? UILayoutGuide {
                 return temp
             }else {
@@ -60,14 +68,11 @@ public extension UIViewController {
     }
     
     var snp: ConstraintAttributesDSL {
-        if #available(iOS 11, *) {
-            return view.safeAreaLayoutGuide.snp
+
+        if #available(iOS 9, *) {
+            return bk_custom_guide.snp
         }else {
-            if #available(iOS 9, *) {
-                return bk_custom_guide.snp
-            }else {
-                return view.snp
-            }
+            return view.snp
         }
     }
     
@@ -82,11 +87,9 @@ public extension UIViewController {
 }
 
 fileprivate weak var AlertController: UIAlertController?
-//是否需要退出当前AlertController
-public var DismissExistAlertController = true
 
 public extension UIViewController {
-
+    
     func bk_presentAlertController(
         title: String?,
         message: String?,
@@ -94,7 +97,7 @@ public extension UIViewController {
         actions: [UIAlertAction])
         -> Void
     {
-
+        
         let closure = { () in
             let temp = UIAlertController.init(title: title, message: message, preferredStyle: preferredStyle)
             for action in actions {
@@ -105,7 +108,8 @@ public extension UIViewController {
             self.present(temp, animated: true, completion: nil)
             AlertController = temp
         }
-        if let alert = AlertController, DismissExistAlertController {
+        if let alert = AlertController, let _ = alert.presentingViewController {
+            
             alert.dismiss(animated: true, completion: closure)
         }else {
             closure()

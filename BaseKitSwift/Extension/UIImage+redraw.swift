@@ -44,8 +44,14 @@ public extension UIImage {
     /// - Returns: 剪切结果
     func crop(pixelRect: CGRect) -> UIImage {
         
-        let drawRect = CGRect.init(x: -pixelRect.origin.x, y: -pixelRect.origin.y, width: pixelWidth, height: pixelHeight)
-        UIGraphicsBeginImageContextWithOptions(pixelRect.size, true, 1)
+        let rect = CGRect.init(x: floor(pixelRect.origin.x),
+                               y: floor(pixelRect.origin.y),
+                               width: floor(pixelRect.width),
+                               height: floor(pixelRect.height))
+        let drawRect = CGRect.init(x: -rect.origin.x, y: -rect.origin.y, width: pixelWidth, height: pixelHeight)
+        //MARK: UIGraphicsBeginImageContextWithOptions size为非整数时，画布大小会向上取整
+        UIGraphicsBeginImageContextWithOptions(rect.size, true, 1)
+        // 当rect.size为非整数时，绘制区域会向下取整
         self.draw(in: drawRect)
         let result = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()

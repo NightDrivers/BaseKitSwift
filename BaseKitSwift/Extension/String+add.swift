@@ -86,9 +86,9 @@ public extension String {
     }
     
     var isIp: Bool {
-        
-        let pattern = "^([0-9]{1,3}.){3}[0-9]{1,3}$"
-        let predicate = NSPredicate.init(format: "SELF MATCHES %@", pattern)
+        let numPre = "(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)"
+        let rex = String.init(format: "^(%@.){3}%@$", numPre, numPre)
+        let predicate = NSPredicate.init(format: "SELF MATCHES %@", rex)
         return predicate.evaluate(with: self)
     }
 }
@@ -141,11 +141,28 @@ public extension String {
     }
 }
 
+public enum Language: Int {
+    
+    case none = 0, en, zh_Hans, ja
+}
+
 public extension String {
+    
+    static var lang = Language.none
     
     var localized: String {
         
-        return Bundle.main.localizedString(forKey: self, value: nil, table: nil)
+        switch String.lang {
+        case .none:
+            return Bundle.main.localizedString(forKey: self, value: nil, table: nil)
+        case .zh_Hans:
+            return Bundle.main.localizedString(forKey: self, value: nil, table: "zh-Hans.lproj/Localizable")
+        case .ja:
+            return Bundle.main.localizedString(forKey: self, value: nil, table: "ja.lproj/Localizable")
+        case .en:
+            return Bundle.main.localizedString(forKey: self, value: nil, table: "en.lproj/Localizable")
+        }
     }
     
+    static let languageChanged = Notification.Name("string.language.did.change")
 }

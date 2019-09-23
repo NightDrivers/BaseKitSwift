@@ -16,15 +16,15 @@ public extension Data {
         return hex.joined(separator: " ")
     }
     
-    mutating func read<T>(to type: T.Type) -> T? {
+    func read<T>(to type: T.Type, offset: Int = 0) -> T? {
         
-        let size = MemoryLayout<T>.size
-        if count < size {
+        guard offset >= 0 else { return nil }
+        let size = MemoryLayout<T>.stride
+        if offset + size > count {
             return nil
         }
-        let bytes = (self as NSData).bytes
-        let pointer = bytes.bindMemory(to: T.self, capacity: 1)
-        self.removeSubrange(0..<size)
+        let bytes = (self as NSData).bytes + offset
+        let pointer = bytes.bindMemory(to: type, capacity: 1)
         return pointer.pointee
     }
     

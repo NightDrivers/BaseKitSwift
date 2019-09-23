@@ -24,14 +24,13 @@ public extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
     
-    func image() -> UIImage? {
+    func image() -> UIImage {
         
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContext(rect.size)
-        guard let ctx = UIGraphicsGetCurrentContext() else { return nil }
-        ctx.setFillColor(self.cgColor)
-        ctx.fill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
+        setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
     }
