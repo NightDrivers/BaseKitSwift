@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/NightDrivers/SnapKit.git",
+        "state": {
+          "branch": null,
+          "revision": "e8a2be9013dfd8f5c75fd8a46458abbcd13f3682",
+          "version": "5.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

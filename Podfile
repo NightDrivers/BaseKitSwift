@@ -1,14 +1,14 @@
 target 'BaseKitSwift' do
   use_frameworks!
-  pod 'SnapKit', :git => '../SnapKit/.git', :tag => '5.0.0-beta'
+  pod 'SnapKit', :git => 'https://github.com/NightDrivers/SnapKit.git', :tag => '5.1.0'
 end
 
 target 'BaseKitSwiftExample' do
   use_frameworks!
-  pod 'SnapKit', :git => '../SnapKit/.git', :tag => '5.0.0-beta'
+  pod 'SnapKit', :git => 'https://github.com/NightDrivers/SnapKit.git', :tag => '5.1.0'
 end
 
 target 'BaseKitSwiftTests' do
   use_frameworks!
-  pod 'SnapKit', :git => '../SnapKit/.git', :tag => '5.0.0-beta'
+  pod 'SnapKit', :git => 'https://github.com/NightDrivers/SnapKit.git', :tag => '5.1.0'
 end

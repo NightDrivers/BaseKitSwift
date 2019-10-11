@@ -1,22 +1,22 @@
 PODS:
-  - SnapKit (5.0.0-beta)
+  - SnapKit (5.1.0)
 
 DEPENDENCIES:
-  - SnapKit (from `../SnapKit/.git`, tag `5.0.0-beta`)
+  - SnapKit (from `https://github.com/NightDrivers/SnapKit.git`, tag `5.1.0`)
 
 EXTERNAL SOURCES:
   SnapKit:
-    :git: "../SnapKit/.git"
-    :tag: 5.0.0-beta
+    :git: https://github.com/NightDrivers/SnapKit.git
+    :tag: 5.1.0
 
 CHECKOUT OPTIONS:
   SnapKit:
-    :git: "../SnapKit/.git"
-    :tag: 5.0.0-beta
+    :git: https://github.com/NightDrivers/SnapKit.git
+    :tag: 5.1.0
 
 SPEC CHECKSUMS:
-  SnapKit: 7e7240eb21119e750f00e65126becb16fd02bc5d
+  SnapKit: 888d6be5301acd44e6df227ff19a6c28d80c8770
 
-PODFILE CHECKSUM: 952be01276d75efa289c8e7e37a4c0d4c4ab06a8
+PODFILE CHECKSUM: 5ea2bc981eeb1e3a5fab40cd2f40055467de4c2b
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5

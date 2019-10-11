@@ -6,6 +6,7 @@
 //  Copyright © 2018年 Xiamen Hanin. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import AVFoundation
 import Photos
