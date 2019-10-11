@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "NightDriver" => "lin_de_chun@sina.com" }
   s.source       = { :git => "https://github.com/NightDrivers/BaseKitSwift.git", :tag => "#{s.version}" }
-  s.source_files  = "BaseKitSwift/*/*.swift"
+  s.source_files  = "Sources/BaseKitSwift/*/*.swift"
   s.ios.deployment_target = '8.0'
-  s.dependency "SnapKit", :git => 'https://github.com/NightDrivers/SnapKit.git', :tag => '5.1.0'
+  s.dependency "SnapKit"
   #s.exclude_files = "Classes/Exclude"
 end
