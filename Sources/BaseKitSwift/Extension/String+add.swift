@@ -97,37 +97,12 @@ public extension String {
     
     var md5: String {
         
-        return encryptionString(type: .md5)
+        return self.data(using: .utf8)!.md5
     }
     
     var sha1: String {
         
-        return encryptionString(type: .sha1)
-    }
-    
-    private enum Encryption {
-        case md5, sha1
-    }
-    
-    private func encryptionString(type: Encryption) -> String {
-        
-        var length: Int
-        switch type {
-        case .md5:
-            length = Int(CC_MD5_DIGEST_LENGTH)
-        case .sha1:
-            length = Int(CC_SHA1_DIGEST_LENGTH)
-        }
-        let digest = UnsafeMutablePointer<UInt8>.allocate(capacity: length)
-        let data = self.data(using: String.Encoding.utf8)!
-        switch type {
-        case .md5:
-            _ = CC_MD5((data as NSData).bytes, CC_LONG.init(data.count), digest)
-        case .sha1:
-            _ = CC_SHA1((data as NSData).bytes, CC_LONG.init(data.count), digest)
-        }
-        let digestData = Data.init(bytes: digest, count: length)
-        return digestData.hex.joined()
+        return self.data(using: .utf8)!.sha1
     }
 }
 

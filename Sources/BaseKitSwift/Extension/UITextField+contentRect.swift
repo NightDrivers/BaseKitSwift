@@ -14,8 +14,10 @@ public extension UITextField {
     
     static func bk_swizzle() {
         
+        guard Thread.isMainThread else { return }
         if swizzled { return }
         
+        swizzled = true
         let originSelectors = [
             #selector(self.leftViewRect(forBounds:)),
             #selector(self.textRect(forBounds:)),
@@ -38,7 +40,7 @@ public extension UITextField {
     fileprivate struct Key {
         
         static var leftViewRectKey = 0
-        static var leftTextMargin = 0
+        static var horizonalTextMargin = 0
     }
     
     var leftViewRect: CGRect? {
@@ -52,14 +54,14 @@ public extension UITextField {
         }
     }
     
-    var leftTextMargin: CGFloat? {
+    var horizonalTextMargin: CGFloat? {
         
         set {
-            objc_setAssociatedObject(self, &Key.leftTextMargin, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &Key.horizonalTextMargin, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
         
         get {
-            return objc_getAssociatedObject(self, &Key.leftTextMargin) as? CGFloat
+            return objc_getAssociatedObject(self, &Key.horizonalTextMargin) as? CGFloat
         }
     }
     
@@ -74,11 +76,17 @@ public extension UITextField {
     
     @objc func bk_textRect(forBounds bounds: CGRect) -> CGRect {
         
-        if let leftTextMargin = leftTextMargin {
+        if let horizonalTextMargin = horizonalTextMargin {
             
             var rect = bk_textRect(forBounds: bounds)
-            rect.origin.x += leftTextMargin
-            rect.size.width -= leftTextMargin
+            rect.origin.x += horizonalTextMargin
+            switch clearButtonMode {
+            case .always,
+                 .unlessEditing:
+                rect.size.width -= horizonalTextMargin
+            default:
+                rect.size.width -= 2*horizonalTextMargin
+            }
             return rect
         }else {
             return bk_textRect(forBounds: bounds)
@@ -87,11 +95,17 @@ public extension UITextField {
     
     @objc func bk_editingRect(forBounds bounds: CGRect) -> CGRect {
         
-        if let leftTextMargin = leftTextMargin {
+        if let horizonalTextMargin = horizonalTextMargin {
             
             var rect = bk_editingRect(forBounds: bounds)
-            rect.origin.x += leftTextMargin
-            rect.size.width -= leftTextMargin
+            rect.origin.x += horizonalTextMargin
+            switch clearButtonMode {
+            case .whileEditing,
+                 .always:
+                rect.size.width -= horizonalTextMargin
+            default:
+                rect.size.width -= 2*horizonalTextMargin
+            }
             return rect
         }else {
             return bk_editingRect(forBounds: bounds)

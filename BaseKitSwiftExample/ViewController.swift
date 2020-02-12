@@ -10,93 +10,109 @@ import UIKit
 import BaseKitSwift
 
 class ViewController: UIViewController {
+    
+    struct ActionItem {
+        var title: String
+        var action: (() -> Void)?
+    }
+    
+    var actions = [ActionItem]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor.init(white: 0.9, alpha: 1)
-        label.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.centerY.equalTo(self.snp.centerY)
-            $0.height.equalTo(label.font.lineHeight)
-        }
-        view1.snp.makeConstraints {
-            $0.left.equalTo(label.snp.right)
-            $0.centerY.equalTo(label.snp.centerY)
-            $0.height.equalTo(label.snp.height)
-            $0.right.equalToSuperview()
-        }
-        label2.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.top.equalTo(label.snp.bottom)
-            $0.height.equalTo(label.font.lineHeight)
-            $0.width.equalTo(label.snp.width)
-        }
-        view2.snp.makeConstraints {
-            $0.left.equalTo(label2.snp.right)
-            $0.top.equalTo(label.snp.bottom)
-            $0.height.equalTo(label2.snp.height)
-            $0.right.equalToSuperview()
-        }
-        button.snp.makeConstraints {
-            $0.top.equalTo(label2.snp.bottom)
-            $0.height.equalTo(button.titleLabel!.font.lineHeight)
-            $0.centerX.equalToSuperview()
+        title = "主页"
+        initActions()
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(self.snp.top)
+            $0.bottom.right.left.equalToSuperview()
         }
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let action = UIAlertAction(title: "确定", style: .default, handler: nil)
-        bk_presentAlertController(title: "提示", message: "message", preferredStyle: .alert, actions: [action])
+    func initActions() -> Void {
+        
+        var action = ActionItem.init(title: "图文按钮") { [weak self] in
+            let temp = BKImageTitleButtonSampleController()
+            self?.push(temp)
+        }
+        actions.append(action)
+        
+        action = ActionItem.init(title: "测试") {
+            var data = Data.init([0x12, 0x34])
+            let length: UInt16 = 0x7856
+            let lengthData = Data.create(length, as: UInt16.self)
+            data.append(lengthData)
+            data.append(0x56341290, as: UInt32.self)
+            data.append(0, as: UInt64.self)
+            data.storeBytes(0x1290785634129078, toByteOffset: 8, as: UInt64.self)
+            print(data.hexString)
+        }
+        actions.append(action)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print(label.frame)
+    func push(_ temp: UIViewController) -> Void {
+        
+        temp.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(temp, animated: true)
     }
     
-    lazy var view1: UIView = {
-        let temp = UIView()
-        temp.backgroundColor = UIColor.random
-        view.addSubview(temp)
-        return temp
-    }()
-    
-    lazy var label: UILabel = {
-        let temp = UILabel()
-        temp.text = "爱发的看法"
-        temp.textAlignment = .center
-        temp.font = UIFont.systemFont(ofSize: 11)
-        view.addSubview(temp)
-        return temp
-    }()
-    
-    lazy var view2: UIView = {
-        let temp = UIView()
-        temp.backgroundColor = UIColor.random
-        view.addSubview(temp)
-        return temp
-    }()
-    
-    lazy var label2: UILabel = {
-        let temp = UILabel()
-        temp.text = "爱发的看法阿斯顿发"
-        temp.textAlignment = .center
-        temp.font = UIFont.systemFont(ofSize: 11)
-        view.addSubview(temp)
-        return temp
-    }()
-    
-    lazy var button: UIButton = {
-        let temp = UIButton.init(type: .custom)
-        temp.setTitle("这是一个按钮啊剪短发了", for: .normal)
-        temp.setTitleColor(UIColor.random, for: .normal)
-        temp.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        temp.setImage(#imageLiteral(resourceName: "btn_pulldown"), for: .normal)
-        temp.layer.borderWidth = 1
-        temp.layer.borderColor = UIColor.random.cgColor
+    lazy var tableView: UITableView = {
+        let temp = UITableView(frame: .zero, style: .grouped)
+        temp.delegate = self
+        temp.dataSource = self
         view.addSubview(temp)
         return temp
     }()
 }
 
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return 0.01
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return 0.01
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        return nil
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return actions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell = tableView.dequeueReusableCell(withIdentifier: "iden")
+        if cell == nil {
+            cell = UITableViewCell(style: .default, reuseIdentifier: "iden")
+        }
+        let action = actions[indexPath.row]
+        cell?.textLabel?.text = action.title
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let action = actions[indexPath.row].action {
+            action()
+        }
+    }
+}

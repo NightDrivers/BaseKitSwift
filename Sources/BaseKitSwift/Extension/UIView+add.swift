@@ -54,7 +54,10 @@ public extension UIView {
     
     static func swizzlePointInsideMethod() {
         
+        guard Thread.isMainThread else { return }
         if swizzled { return }
+        
+        swizzled = true
         
         if let origin = class_getInstanceMethod(self, #selector(point(inside:with:))),
             let new = class_getInstanceMethod(self, #selector(bk_point(inside:with:))) {

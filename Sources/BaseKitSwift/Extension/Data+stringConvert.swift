@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommonCrypto
 
 public extension Data {
     
@@ -14,18 +15,6 @@ public extension Data {
     var hexString: String  {
         
         return hex.joined(separator: " ")
-    }
-    
-    func read<T>(to type: T.Type, offset: Int = 0) -> T? {
-        
-        guard offset >= 0 else { return nil }
-        let size = MemoryLayout<T>.stride
-        if offset + size > count {
-            return nil
-        }
-        let bytes = (self as NSData).bytes + offset
-        let pointer = bytes.bindMemory(to: type, capacity: 1)
-        return pointer.pointee
     }
     
     var hex: [String] {
@@ -85,5 +74,84 @@ public extension Data {
         }else {
             return nil
         }
+    }
+}
+
+public extension Data {
+    
+    var md5: String {
+        
+        return encryptionString(type: .md5)
+    }
+    
+    var sha1: String {
+        
+        return encryptionString(type: .sha1)
+    }
+    
+    private enum Encryption {
+        case md5, sha1
+    }
+    
+    private func encryptionString(type: Encryption) -> String {
+        
+        var length: Int
+        switch type {
+        case .md5:
+            length = Int(CC_MD5_DIGEST_LENGTH)
+        case .sha1:
+            length = Int(CC_SHA1_DIGEST_LENGTH)
+        }
+        let digest = UnsafeMutablePointer<UInt8>.allocate(capacity: length)
+        switch type {
+        case .md5:
+            _ = CC_MD5((self as NSData).bytes, CC_LONG.init(self.count), digest)
+        case .sha1:
+            _ = CC_SHA1((self as NSData).bytes, CC_LONG.init(self.count), digest)
+        }
+        let digestData = Data.init(bytes: digest, count: length)
+        return digestData.hex.joined()
+    }
+}
+
+public extension Data {
+    
+    static func create<T>(_ value: T, as type: T.Type) -> Data {
+        
+        let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+        pointer.pointee = value
+        let data = Data.init(bytes: UnsafeRawPointer(pointer), count: MemoryLayout<T>.stride)
+        pointer.deallocate()
+        return data
+    }
+    
+    mutating func append<T>(_ value: T, as type: T.Type) -> Void {
+        
+        let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+        pointer.pointee = value
+        let raw = pointer.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+        append(raw, count: MemoryLayout<T>.stride)
+        pointer.deallocate()
+    }
+    
+    mutating func storeBytes<T>(_ value: T, toByteOffset offset: Int = 0, as type: T.Type) {
+        
+        let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+        pointer.pointee = value
+        let size = MemoryLayout<T>.stride
+        replaceSubrange(offset..<offset + size, with: UnsafePointer(pointer), count: size)
+        pointer.deallocate()
+    }
+    
+    func readValue<T>(offset: Int = 0, as type: T.Type) -> T? {
+        
+        guard offset >= 0 else { return nil }
+        let size = MemoryLayout<T>.stride
+        if offset + size > count {
+            return nil
+        }
+        let bytes = (self as NSData).bytes + offset
+        let pointer = bytes.bindMemory(to: type, capacity: 1)
+        return pointer.pointee
     }
 }

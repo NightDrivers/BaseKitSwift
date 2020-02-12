@@ -24,7 +24,11 @@ public extension UD {
     
     var namespace: String {
         
+        #if DEBUG
         return "\(type(of: self)).\(self)"
+        #else
+        return "\(type(of: self)).\(self)".md5
+        #endif
     }
     
     func save(_ value: Self.ValueType?) -> Void {

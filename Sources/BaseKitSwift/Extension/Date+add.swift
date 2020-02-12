@@ -8,6 +8,30 @@
 
 import Foundation
 
+public enum Week {
+    
+    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
+    
+    var index: Int {
+        switch self {
+        case .sunday:
+            return 0
+        case .monday:
+            return 1
+        case .tuesday:
+            return 2
+        case .wednesday:
+            return 3
+        case .thursday:
+            return 4
+        case .friday:
+            return 5
+        case .saturday:
+            return 6
+        }
+    }
+}
+
 public extension Date {
     
     static func date(year: Int, month: Int, day: Int) -> Date {
@@ -36,9 +60,27 @@ public extension Date {
     }
     
     /// 1: 星期日 7:星期六
-    var weekdayIndex: Int {
+    var weekdayIndex: Week {
         
-        return Calendar.current.component(.weekday, from: self)
+        let index = Calendar.current.component(.weekday, from: self)
+        switch index {
+        case 1:
+            return .sunday
+        case 2:
+            return .monday
+        case 3:
+            return .tuesday
+        case 4:
+            return .wednesday
+        case 5:
+            return .thursday
+        case 6:
+            return .friday
+        case 7:
+            return .saturday
+        default:
+            fatalError()
+        }
     }
     
     var year: Int {
